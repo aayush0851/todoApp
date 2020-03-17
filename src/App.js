@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import propTypes from 'prop-types';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class Form extends React.Component{
+  constructor(){
+    super();
+    this.state={
+      task: ''
+    }
+    this.submitForm = this.submitForm.bind(this)
+    this.taskWritten = this.taskWritten.bind(this)
+  }
+  taskWritten(e){
+    this.setState({
+      task: e.target.value
+    })
+  }
+  submitForm(e) {
+    e.preventDefault();
+    console.log(this.state.task)
+    alert('Task added');
+    this.setState({
+      task: ''
+    })
+  }
+  render(){
+    return(
+      <form onSubmit={this.submitForm}>
+        <input 
+          type="text"
+          placeholder="Enter the task here"
+          onChange={this.taskWritten}
+          value={this.state.task}
+          />
+        <input 
+          type="submit" value="Enter"/>
+      </form>
+    )
+  }
 }
 
-export default App;
+const tasks = [];
+
+export default Form;
