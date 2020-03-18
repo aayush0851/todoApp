@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 class App extends React.Component{
   constructor(){
@@ -17,15 +18,14 @@ class App extends React.Component{
   }
   submitForm(e) {
     e.preventDefault();
-    console.log(this.state.task);
     this.state.task === '' ? alert('Empty Field') : arr.unshift(this.state.task);
     this.setState({
       task: ''
     })
-    console.log(arr);
   }   
-  removeItem(){
-    console.log('item removed')
+  removeItem(key){
+    arr = arr.filter((item)=> item !== key);
+    this.forceUpdate();
   }
   render(){
     return(
@@ -35,7 +35,7 @@ class App extends React.Component{
             onEdit={this.taskWritten}
             data={this.state.task}
           />
-        <List del={this.removeItem}/>
+        <List del={this.removeItem} edit={this.updateItem}/>
       </div>
     )
   }
@@ -51,7 +51,7 @@ class Form extends React.Component {
             placeholder="Enter the task here"
             onChange={this.props.onEdit}
             value={this.props.data}
-            required/>
+            />
           <input 
             type="submit" value="Enter"/>
         </form>
@@ -61,11 +61,35 @@ class Form extends React.Component {
 }
 
 class List extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      updatedTask: ''
+    }
+    this.editItem = this.editItem.bind(this)
+    this.updateTask = this.updateTask.bind(this)
+  }
+  editItem(a){
+    this.setState({
+      updatedTask: a.target.value
+    })
+  }
+  updateTask(b){
+    b.preventDefault();
+    var store = arr.findIndex((item)=> item = this.props.data)
+    console.log(this.state.updatedTask)
+    console.log(store)
+  }
   render(){
-    const listItems = arr.map((item)=>
+    const listItems = arr.map((item) =>
       <li key={item}>
-          {item}
-          <button onClick={this.props.del}>Del</button>
+        {item}
+        <button onClick={()=>this.props.del(item)}>Del</button>
+        <Form 
+            onPost={this.updateTask}
+            onEdit={this.editItem}
+          />
+        {/* <input type="text" onChange={this.updateItem}/> */}
       </li>
     );
     return(
@@ -76,7 +100,7 @@ class List extends React.Component {
 
 
 
-const arr = [];
+var arr = [];
 
 
 export default App;
