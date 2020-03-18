@@ -1,14 +1,14 @@
 import React from 'react';
-import propTypes from 'prop-types';
 
 class App extends React.Component{
   constructor(){
     super();
     this.state={
-      task: ''
+      task: '',
     }
     this.submitForm = this.submitForm.bind(this)
     this.taskWritten = this.taskWritten.bind(this)
+    this.removeItem = this.removeItem.bind(this)
   }
   taskWritten(e){
     this.setState({
@@ -18,32 +18,24 @@ class App extends React.Component{
   submitForm(e) {
     e.preventDefault();
     console.log(this.state.task);
-    alert('Task added');
-    arr.unshift(this.state.task);
+    this.state.task === '' ? alert('Empty Field') : arr.unshift(this.state.task);
     this.setState({
       task: ''
     })
     console.log(arr);
+  }   
+  removeItem(){
+    console.log('item removed')
   }
   render(){
     return(
       <div>
-        {/* <form onSubmit={this.submitForm}>
-          <input 
-            type="text"
-            placeholder="Enter the task here"
-            onChange={this.taskWritten}
-            value={this.state.task}
-            />
-          <input 
-            type="submit" value="Enter"/>
-        </form> */}
         <Form 
             onPost={this.submitForm}
             onEdit={this.taskWritten}
-            data={this.state.value}
+            data={this.state.task}
           />
-        <List />
+        <List del={this.removeItem}/>
       </div>
     )
   }
@@ -59,7 +51,7 @@ class Form extends React.Component {
             placeholder="Enter the task here"
             onChange={this.props.onEdit}
             value={this.props.data}
-            />
+            required/>
           <input 
             type="submit" value="Enter"/>
         </form>
@@ -70,13 +62,22 @@ class Form extends React.Component {
 
 class List extends React.Component {
   render(){
-    const listItems = arr.map((item)=> <li>{item}</li>);
+    const listItems = arr.map((item)=>
+      <li key={item}>
+          {item}
+          <button onClick={this.props.del}>Del</button>
+      </li>
+    );
     return(
       <ul>{listItems}</ul>
     )
   }
 }
 
+
+
 const arr = [];
 
+
 export default App;
+
