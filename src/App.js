@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import FlipMove from 'react-flip-move';
+import './style.css';
 
 class App extends React.Component{
   constructor(){
@@ -29,7 +30,7 @@ class App extends React.Component{
   }
   render(){
     return(
-      <div>
+      <div className="box">
         <Form 
             onPost={this.submitForm}
             onEdit={this.taskWritten}
@@ -51,9 +52,10 @@ class Form extends React.Component {
             placeholder="Enter the task here"
             onChange={this.props.onEdit}
             value={this.props.data}
+            className="fill"
             />
           <input 
-            type="submit" value="Enter"/>
+            type="submit" value="Enter" className="submit"/>
         </form>
       </div>
     )
@@ -61,36 +63,29 @@ class Form extends React.Component {
 }
 
 class List extends React.Component {
-  constructor(){
-    super();
-    this.state = {
-      updatedTask: ''
-    }
-    this.editItem = this.editItem.bind(this)
-    this.updateTask = this.updateTask.bind(this)
-  }
-  editItem(a){
-    this.setState({
-      updatedTask: a.target.value
-    })
-  }
-  updateTask(b){
-    b.preventDefault();
-    var store = arr.findIndex((item)=> item = this.props.data)
-    console.log(this.state.updatedTask)
-    console.log(store)
-  }
+  // constructor(){
+  //   super(item);
+  //   this.state= {
+  //     updatedTask : item
+  //   }
+  //   console.log()
+  //   this.updateItem = this.updateItem.bind(this)
+  // }
+  // updateItem(e){
+  //   this.setState({
+  //     updatedTask : e.target.value
+  //   })
+  //   console.log(this.state.updatedTask)
+  // }
   render(){
     const listItems = arr.map((item) =>
+    <FlipMove duration={500} easing="linear">
       <li key={item}>
-        {item}
-        <button onClick={()=>this.props.del(item)}>Del</button>
-        <Form 
-            onPost={this.updateTask}
-            onEdit={this.editItem}
-          />
-        {/* <input type="text" onChange={this.updateItem}/> */}
+        {/* <input type="text" value={item} onChange={this.updateItem}/> */}
+        <p className="ptag">{item}</p>
+        <button className="delButton" onClick={()=>this.props.del(item)}>X</button>
       </li>
+    </FlipMove>
     );
     return(
       <ul>{listItems}</ul>
